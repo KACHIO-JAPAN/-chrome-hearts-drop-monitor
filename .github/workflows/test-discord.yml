@@ -13,13 +13,23 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           python3 - <<'PY'
-          import os, json, urllib.request, urllib.parse
+          import os, json, urllib.request, urllib.parse, urllib.error
           url = os.environ.get("DISCORD_WEBHOOK_URL", "")
           parts = urllib.parse.urlparse(url)
           assert parts.scheme == "https" and parts.netloc in ("discord.com", "discordapp.com") and parts.path.startswith("/api/webhooks/"), "Discord webhook secret missing or invalid"
           data = json.dumps({"content":"✅ Chrome Hearts Monitor：iPhone通知テストです。実際の商品発売ではありません。"}).encode("utf-8")
-          req = urllib.request.Request(url, data=data, headers={"Content-Type":"application/json"}, method="POST")
-          with urllib.request.urlopen(req, timeout=20) as response:
-              assert response.status in (200,204), "Discord did not accept the message"
+          req = urllib.request.Request(url, data=data, headers={"Content-Type":"application/json", "User-Agent":"ChromeHeartsMonitor/1.0 (+https://github.com/KACHIO-JAPAN/-chrome-hearts-drop-monitor)"}, method="POST")
+          try:
+              with urllib.request.urlopen(req, timeout=20) as response:
+                assert response.status in (200,204), "Discord did not accept the message"
+          except urllib.error.HTTPError as exc:
+              body = exc.read(1200).decode("utf-8", "replace")
+              # Print only non-secret server error category; never log webhook URL.
+              try:
+                  obj = json.loads(body)
+                  print("Discord API error:", exc.code, "code:", obj.get("code"), "message:", str(obj.get("message",""))[:160])
+              except ValueError:
+                  print("Discord HTTP error:", exc.code, "non-JSON body, likely edge filtering")
+              raise SystemExit(1)
           print("Discord accepted the test notification; confirm it appeared on your iPhone.")
           PY
