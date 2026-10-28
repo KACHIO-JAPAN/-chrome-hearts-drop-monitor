@@ -1,0 +1,25 @@
+name: Test Discord phone notification
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Send safe test message to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          python3 - <<'PY'
+          import os, json, urllib.request, urllib.parse
+          url = os.environ.get("DISCORD_WEBHOOK_URL", "")
+          parts = urllib.parse.urlparse(url)
+          assert parts.scheme == "https" and parts.netloc in ("discord.com", "discordapp.com") and parts.path.startswith("/api/webhooks/"), "Discord webhook secret missing or invalid"
+          data = json.dumps({"content":"✅ Chrome Hearts Monitor：iPhone通知テストです。実際の商品発売ではありません。"}).encode("utf-8")
+          req = urllib.request.Request(url, data=data, headers={"Content-Type":"application/json"}, method="POST")
+          with urllib.request.urlopen(req, timeout=20) as response:
+              assert response.status in (200,204), "Discord did not accept the message"
+          print("Discord accepted the test notification; confirm it appeared on your iPhone.")
+          PY
