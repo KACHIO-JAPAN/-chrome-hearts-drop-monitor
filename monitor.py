@@ -47,7 +47,7 @@ def products_from(html):
         # Only direct official product detail .html links, never third-party sites or generic pages.
         if parsed.netloc not in ("chromehearts.com", "www.chromehearts.com"):
             continue
-        if not re.search(r"/[^/]+/[^/]+/[^/]+\\.html$", parsed.path):
+        if not re.search(r"/[^/]+/[^/]+/[^/]+\.html$", parsed.path):
             continue
         if len(parsed.path) > 300:
             continue
