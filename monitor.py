@@ -62,7 +62,7 @@ def alert(message):
     if not hook.startswith("https://discord.com/api/webhooks/") and not hook.startswith("https://discordapp.com/api/webhooks/"):
         raise ValueError("Invalid Discord webhook domain")
     payload = json.dumps({"content":message[:1900]}).encode()
-    req = urllib.request.Request(hook, data=payload, headers={"Content-Type":"application/json"}, method="POST")
+    req = urllib.request.Request(hook, data=payload, headers={"Content-Type":"application/json", "User-Agent":"ChromeHeartsMonitor/1.0 (+https://github.com/KACHIO-JAPAN/-chrome-hearts-drop-monitor)"}, method="POST")
     with urllib.request.urlopen(req, timeout=15) as resp:
         if resp.status not in (200, 204):
             raise ValueError(f"Discord returned {resp.status}")
