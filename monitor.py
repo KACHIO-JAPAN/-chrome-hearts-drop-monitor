@@ -146,7 +146,7 @@ def main():
         except Exception as exc:
             print(f"Unverified candidate /{key}: {type(exc).__name__}")
     if errors:
-        print("SOURCE ERROR; state unchanged; no misleading notifications:\\n" + "\\n".join(errors), file=sys.stderr)
+        print("SOURCE ERROR; state unchanged; no misleading notifications:\n" + "\n".join(errors), file=sys.stderr)
         return 2
     print("Official navigation candidates:", sorted(category_keys))
     print("Verified non-excluded categories:", sorted(verified_categories - EXCLUDED))
@@ -165,19 +165,19 @@ def main():
                      "Previously sold / known products are INCLUDED. Purchase and Japan delivery: UNKNOWN."]
             for url, label in examples[:3]:
                 lines.append(f"{label}: {url}")
-            alert("\\n".join(lines))
+            alert("\n".join(lines))
     if new_products:
         # Alert product links separately from the new-category event.
         for offset in range(0, min(len(new_products), 24), 6):
             group = new_products[offset:offset + 6]
-            alert("Chrome Hearts NEW PRODUCT LINK (purchase/JP delivery UNKNOWN):\\n"
-                  + "\\n".join(f"{all_items[u]}: {u}" for u in group))
+            alert("Chrome Hearts NEW PRODUCT LINK (purchase/JP delivery UNKNOWN):\n"
+                  + "\n".join(f"{all_items[u]}: {u}" for u in group))
     STATE.parent.mkdir(exist_ok=True, parents=True)
     STATE.write_text(json.dumps({
         "checked_at_utc": datetime.now(timezone.utc).isoformat(),
         "categories": active_categories,
         "products": all_items
-    }, ensure_ascii=False, indent=2) + "\\n")
+    }, ensure_ascii=False, indent=2) + "\n")
     print(f"Observed {len(all_items)} links; active monitored categories: {active_categories}")
     return 0
 
