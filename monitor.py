@@ -120,6 +120,10 @@ def main():
             if not items:
                 if key in (p.strip("/") for p in CATEGORIES):
                     raise ValueError("No product links; page parser requires review")
+                # Official category pages may render products client-side. A confirmed
+                # nonempty official page is still a displayed category, not a stock claim.
+                if key in category_keys or (key in {"scarf", "slippers"} and key in html.lower()):
+                    verified_categories.add(key)
                 continue
             all_items.update(items)
             verified_categories.add(key)
@@ -137,11 +141,15 @@ def main():
             if items:
                 all_items.update(items)
                 verified_categories.add(key)
+            elif key in category_keys:
+                verified_categories.add(key)
         except Exception as exc:
             print(f"Unverified candidate /{key}: {type(exc).__name__}")
     if errors:
         print("SOURCE ERROR; state unchanged; no misleading notifications:\\n" + "\\n".join(errors), file=sys.stderr)
         return 2
+    print("Official navigation candidates:", sorted(category_keys))
+    print("Verified non-excluded categories:", sorted(verified_categories - EXCLUDED))
     active_categories = sorted(verified_categories - EXCLUDED)
     old_categories = set(old.get("categories", [])) if old is not None else set()
     # Existing legacy state has no category baseline: send a one-time initial alert.
