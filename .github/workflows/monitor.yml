@@ -1,6 +1,11 @@
 name: Chrome Hearts new-product scan
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - monitor.py
+      - .github/workflows/monitor.yml
   schedule:
     - cron: '3/5 * * * *'
 permissions:
@@ -17,6 +22,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Validate monitor syntax
+        run: python -m py_compile monitor.py
       - name: Scan official product categories
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
