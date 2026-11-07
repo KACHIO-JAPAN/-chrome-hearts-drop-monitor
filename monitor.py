@@ -8,6 +8,7 @@ from pathlib import Path
 BASE = "https://www.chromehearts.com"
 CATEGORIES = ["/baccarat", "/scents", "/boxers-leggings", "/intimates", "/socks"]
 EXCLUDED = {"baccarat", "scents", "boxers-leggings", "intimates", "socks", "underwear"}
+NON_SHOP = {"locations", "location", "magazine", "login", "account", "bag", "cart", "terms", "privacy", "contact", "general", "returns", "shipping", "search", "store-locator", "faq", "help", "customer-service", "accessibility", "us", "jp", "en", "en-us", "sitemap", "gift-card", "wishlist", "about", "home"}
 # Previously observed category baseline is stored alongside products. A category is
 # an event when newly visible or after it disappeared; old product history does not matter.
 STATE = Path("state/products.json")
@@ -72,7 +73,7 @@ def category_candidates(html):
         if not parts:
             continue
         key = parts[0]
-        if not re.fullmatch(r"[a-z][a-z0-9-]{1,70}", key) or key in EXCLUDED:
+        if not re.fullmatch(r"[a-z][a-z0-9-]{1,70}", key) or key in EXCLUDED or key in NON_SHOP:
             continue
         # Single-segment links can be categories; product detail links reveal their category.
         # A candidate must still yield official product links when verified below.
@@ -86,8 +87,7 @@ def category_name(path):
 def alert(message):
     hook = os.environ.get("DISCORD_WEBHOOK_URL", "").strip()
     if not hook:
-        print("DISCORD_WEBHOOK_URL not configured; no push notification. Detected:\n" + message)
-        return
+        raise RuntimeError("DISCORD_WEBHOOK_URL not configured; refusing to mark detected events as delivered")
     if not hook.startswith("https://discord.com/api/webhooks/") and not hook.startswith("https://discordapp.com/api/webhooks/"):
         raise ValueError("Invalid Discord webhook domain")
     payload = json.dumps({"content":message[:1900]}).encode()
@@ -150,7 +150,9 @@ def main():
         return 2
     print("Official navigation candidates:", sorted(category_keys))
     print("Verified non-excluded categories:", sorted(verified_categories - EXCLUDED))
-    active_categories = sorted(verified_categories - EXCLUDED)
+    # The homepage official navigation determines visible category events.
+    # Some paths redirect to individual product pages instead of category listings.
+    active_categories = sorted(category_keys - EXCLUDED - NON_SHOP)
     old_categories = set(old.get("categories", [])) if old is not None else set()
     # Existing legacy state has no category baseline: send a one-time initial alert.
     new_categories = sorted(set(active_categories) - old_categories)
