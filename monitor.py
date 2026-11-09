@@ -12,6 +12,8 @@ NON_SHOP = {"locations", "location", "magazine", "login", "account", "bag", "car
 # Previously observed category baseline is stored alongside products. A category is
 # an event when newly visible or after it disappeared; old product history does not matter.
 STATE = Path("state/products.json")
+# Independently observed official-nav sightings, delivered once via the same webhook.
+OBSERVATIONS = Path("state/observed-events.json")
 class Links(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -150,15 +152,26 @@ def main():
         return 2
     print("Official navigation candidates:", sorted(category_keys))
     print("Verified non-excluded categories:", sorted(verified_categories - EXCLUDED))
-    # The homepage official navigation determines visible category events.
-    # Some paths redirect to individual product pages instead of category listings.
-    active_categories = sorted(category_keys - EXCLUDED - NON_SHOP)
+    # A category shown in ANY scanned official navigation/category page counts, even
+    # if another official page lacks the link or its own route redirects.
+    active_categories = sorted((category_keys | verified_categories) - EXCLUDED - NON_SHOP)
     old_categories = set(old.get("categories", [])) if old is not None else set()
     # Existing legacy state has no category baseline: send a one-time initial alert.
     new_categories = sorted(set(active_categories) - old_categories)
+    delivered_ids = set(old.get("delivered_observation_ids", [])) if old else set()
+    alerted_now = set()
+    if OBSERVATIONS.exists():
+        for event in json.loads(OBSERVATIONS.read_text()).get("events", []):
+            if event["id"] in delivered_ids:
+                continue
+            alert(event["message"])
+            delivered_ids.add(event["id"])
+            alerted_now.add(event.get("category", "").lower())
     new_products = sorted(set(all_items) - set(old.get("products", {}))) if old is not None else []
     if new_categories:
         for key in new_categories:
+            if key in alerted_now:
+                continue  # Already notified by a recorded official sighting this run.
             examples = [(url, label) for url, label in all_items.items()
                         if urllib.parse.urlparse(url).path.startswith("/" + key + "/")]
             lines = [f"🔔 Chrome Hearts OFFICIAL CATEGORY detected: {category_name(key)}",
@@ -178,6 +191,7 @@ def main():
     STATE.write_text(json.dumps({
         "checked_at_utc": datetime.now(timezone.utc).isoformat(),
         "categories": active_categories,
+        "delivered_observation_ids": sorted(delivered_ids),
         "products": all_items
     }, ensure_ascii=False, indent=2) + "\n")
     print(f"Observed {len(all_items)} links; active monitored categories: {active_categories}")
