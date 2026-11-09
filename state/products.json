@@ -1,6 +1,10 @@
 {
-  "checked_at_utc": "2026-11-08T23:57:49.140799+00:00",
+  "checked_at_utc": "2026-11-09T02:48:55.705015+00:00",
   "categories": [],
+  "delivered_observation_ids": [
+    "official-nav-20261109-1144-scarf",
+    "official-nav-20261109-1144-slippers"
+  ],
   "products": {
     "https://www.chromehearts.com/baccarat/tumbler/174132CRYXXX015.html": "$2,625",
     "https://www.chromehearts.com/baccarat/decanter/174131CRYXXX013.html": "$4,275",
