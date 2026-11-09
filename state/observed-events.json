@@ -1,0 +1,16 @@
+{
+  "source": "official navigation observed during Chrome Hearts monitoring (one inconsistent official response)",
+  "observed_at_jst": "2026-11-09 11:44 JST",
+  "events": [
+    {
+      "id": "official-nav-20261109-1144-scarf",
+      "category": "scarf",
+      "message": "🔔 CHROME HEARTS OFFICIAL NAVIGATION — SCARF (再表示検知)\n検知時刻: 2026-11-09 11:44 JST\n公式カテゴリ: https://www.chromehearts.com/scarf\n公式ナビゲーション参照: https://www.chromehearts.com/underwear/\n掲載商品: MATH PLUS SCARF | $375 | SKU 222575AEGXXX059\n商品URL: https://www.chromehearts.com/scarf/math-plus-scarf/222575AEGXXX059.html\nサイズ: 選択肢なし / 20in x 20in | 在庫: 公式SOLD OUT | 日本配送: UNKNOWN\n注: 公式の一部ページ応答だけにリンク表示。別ページでは非表示、カテゴリURLはトップへ転送。販売開始・購入可能性は未確認。既知商品も通知対象。"
+    },
+    {
+      "id": "official-nav-20261109-1144-slippers",
+      "category": "slippers",
+      "message": "🔔 CHROME HEARTS OFFICIAL NAVIGATION — SLIPPERS (再表示検知)\n検知時刻: 2026-11-09 11:44 JST\n公式カテゴリ: https://www.chromehearts.com/slippers\n公式ナビゲーション参照: https://www.chromehearts.com/underwear/\n掲載商品(過去確認): HOTEL SLIPPERS | 過去価格 $595 | SKU 204651B2UXXX07M\nサイズ(過去確認): XS/S/M/L/XL | 現在のサイズ別在庫: UNKNOWN\n現在の価格・公式商品掲載・日本配送・注文成立可否: UNKNOWN\n注: 公式の一部ページ応答だけにリンク表示。別ページでは非表示、カテゴリURLはトップへ転送。新発売・再販・購入可能性は未確認。"
+    }
+  ]
+}
