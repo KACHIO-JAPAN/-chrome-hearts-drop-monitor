@@ -1,9 +1,12 @@
 {
-  "checked_at_utc": "2026-11-12T19:11:47.555545+00:00",
-  "categories": [],
+  "checked_at_utc": "2026-11-12T20:26:21.952520+00:00",
+  "categories": [
+    "eyewear"
+  ],
   "delivered_observation_ids": [
     "official-nav-20261109-1144-scarf",
-    "official-nav-20261109-1144-slippers"
+    "official-nav-20261109-1144-slippers",
+    "official-nav-20261113-0522-eyewear"
   ],
   "products": {
     "https://www.chromehearts.com/baccarat/tumbler/174132CRYXXX015.html": "$2,625",
