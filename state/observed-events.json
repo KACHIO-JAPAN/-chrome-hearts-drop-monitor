@@ -16,6 +16,11 @@
       "id": "official-nav-20261113-0522-eyewear",
       "category": "eyewear",
       "message": "🔔 CHROME HEARTS OFFICIAL NAVIGATION — EYEWEAR（カテゴリ初回表示検知）\n検知時刻: 2026-11-13 05:22 JST\n公式カテゴリ: https://www.chromehearts.com/eyewear\n公式ナビゲーション: https://www.chromehearts.com/\n掲載商品: MIO LORD | 公式価格 $1,470 (USD) | 公式商品ID/SKU相当 21978827FE50010\n公式商品ページ: https://www.chromehearts.com/eyewear/mio-lord/21978827FE50010.html\nサイズ: EYE 50mm / BRIDGE 18mm / TEMPLE 147mm | FRAME FLINT / LENS DARK GREY\n在庫: Add to Bag 表示あり、実在庫 UNKNOWN | 日本配送: UNKNOWN\n注: 公式ナビゲーションと商品ページ表示を確認。過去販売歴の有無に関係なく初回表示を通知。新発売・再販・決済成功・日本からの購入可能性は未確認。"
+    },
+    {
+      "id": "official-nav-20261119-1825-hoodie",
+      "category": "hoodie",
+      "message": "🔔 CHROME HEARTS OFFICIAL NAVIGATION — HOODIE（カテゴリ表示を検知）\n確認時刻: 2026-11-19 18:25 JST\n公式カテゴリ: https://www.chromehearts.com/hoodie\nカテゴリ表示の観測元（公式ページ取得応答）: https://www.chromehearts.com/eyewear/\n掲載商品（過去の公式取得情報）: BLUE GLITTER HOODIE | 過去価格 $750 | SKU相当 152701BLKXXX754\n商品URL: https://www.chromehearts.com/hoodie/blue-glitter-hoodie/152701BLKXXX754.html\nサイズ（過去の公式取得情報）: XS/S/M/L/XL/XXL\n現在の商品掲載・価格・SKU・サイズ別在庫・日本配送・購入可能性: UNKNOWN\n注: 公式ページ取得応答の一部だけにHOODIEのナビリンクが表示。他の公式ページでは非表示で、カテゴリ/商品URLはトップページへ転送。継続表示、再販、在庫復活、注文成立は未確認。既知の商品でもカテゴリ表示の観測を通知対象として扱う。"
     }
   ]
 }
